@@ -31,8 +31,8 @@ e2e-testing-selenium/
 │   ├── test_checkout.py     # Tests del flujo de checkout, pagos y confirmación
 │   ├── test_login.py        # Test login exitoso
 │   └── test_login_fail.py   # Test login fallido y manejo de errores
-├── reports/                 # Reportes HTML y screenshots
-│   ├── screenshots/         # Carpeta creada automáticamente para capturas al fallar un test
+├── reports/                 # Se genera automáticamente al ejecutar los tests para Reportes HTML
+│   ├── screenshots/         # Capturas de pantalla al fallar un test
 ├── requirements.txt         # Dependencias del proyecto
 └── run_tests.py             # Script para ejecutar todos los tests cross-browser
 └── pytest.ini               # Configuración de Pytest
@@ -70,15 +70,14 @@ pip install -r requirements.txt
 ```
 ### Cómo ejecutar los tests:
 
-Ejecutar todos los tests y generar reporte HTML:
-- Con el script *run_tests.py*
+- Con el script *run_tests.py* (Chrome por defecto)
 
-Genera reportes HTML con timestamp y screenshots diferenciados por navegador:
+Ejecuta todos los tests y genera reportes HTML con timestamp y screenshots diferenciados por browser:
 ```
-python run_tests.py          # Chrome (por default)
-python run_tests.py chrome   # solo Chrome
-python run_tests.py firefox  # solo Firefox
-python run_tests.py all      # Chrome y Firefox
+python run_tests.py
+python run_tests.py chrome
+python run_tests.py firefox
+python run_tests.py all
 ```
 - O manualmente con PyTest, para generar un único reporte HTML sobrescribiendo el reporte existente:
 ```
@@ -98,5 +97,5 @@ Ejemplo:
 ### Notas:
 
 - Los reportes HTML están ignorados en GitHub (reports/) para mantener el repositorio limpio.
-- Los fixtures de Selenium se encuentran en tests/conftest.py.
+- Los fixtures de Selenium se encuentran en conftest.py.
 - Implementamos Page Object Model para separar la lógica de interacción con la UI.
