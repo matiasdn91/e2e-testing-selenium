@@ -19,7 +19,7 @@ Además, el proyecto soporta ejecución **cross-browser** (Chrome y Firefox) y g
 
 ### Estructura del proyecto
 ```
-ui-testing-selenium/
+e2e-testing-selenium/
 ├── pages/                   # Clases Page Object
 │   ├── cart_page.py         # Métodos para interactuar con el carrito de compras
 │   ├── checkout_page.py     # Métodos para completar el proceso de checkout
