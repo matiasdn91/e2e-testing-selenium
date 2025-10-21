@@ -3,6 +3,7 @@
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.13-blue" style="max-height: 300px;" style="max-height: 300px;"></a>
 <a href="https://www.selenium.dev/"><img src="https://img.shields.io/badge/Selenium-Automation-brightgreen" style="max-height: 300px;" style="max-height: 300px;"></a>
 <a href="https://docs.pytest.org/en/stable/"><img src="https://img.shields.io/badge/Pytest-Testing-yellow" style="max-height: 300px;" style="max-height: 300px;"></a>
+<img src="https://img.shields.io/badge/Test-Coverage-brightgreen" style="max-height: 300px;" style="max-height: 300px;"></a>
 </p>
 
 <div align="center">
@@ -94,8 +95,23 @@ Ejemplo:
   <img src="images/test_login_fail.png" width="800">
 </p>
 
+## Tests y métricas de calidad
+
+### Instalar cobertura:
+```
+pip install pytest-cov
+```
+### Correr todos los tests y ver cobertura en consola:
+```
+pytest --cov=pages --cov-report=term-missing
+```
+### Generar reporte HTML de cobertura:
+```
+pytest --cov=pages --cov-report=html
+```
 ### Notas:
 
 - Los reportes HTML están ignorados en GitHub (reports/) para mantener el repositorio limpio.
 - Los fixtures de Selenium se encuentran en conftest.py.
 - Implementamos Page Object Model para separar la lógica de interacción con la UI.
+- Se utiliza pytest-cov para medir la cobertura de código de los Page Objects y tests.
