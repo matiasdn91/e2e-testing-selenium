@@ -22,11 +22,9 @@ class CheckoutPage:
         self.driver.find_element(By.CSS_SELECTOR, '[data-test="postalCode"]').send_keys(postal_code)
 
     def continue_checkout(self):
-        # Hace clic en el botón Continue.
         self.wait.until(EC.element_to_be_clickable(self.continue_button)).click()
 
     def finish_checkout(self):
-        # Hace clic en el botón Finish.
         self.wait.until(EC.element_to_be_clickable(self.finish_button)).click()
 
     def get_success_message(self):

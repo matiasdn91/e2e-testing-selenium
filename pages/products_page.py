@@ -54,6 +54,5 @@ class ProductsPage:
             raise ValueError(f"Criterio inválido: {criteria}")
 
     def go_to_cart(self):
-        # Navega al carrito de compras.
         self.wait.until(EC.element_to_be_clickable(self.cart_icon)).click()
 
