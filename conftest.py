@@ -18,7 +18,18 @@ def driver(request):
     browser = os.environ.get("BROWSER", "chrome").lower()
 
     if browser == "chrome":
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        from selenium.webdriver.chrome.options import Options
+
+        # Desactivamos alerta de contraseña insegura de Chrome
+        chrome_options = Options()
+        chrome_options.add_experimental_option("prefs", {
+        "profile.password_manager_leak_detection": False
+        })
+
+        driver = webdriver.Chrome(
+            service=ChromeService(ChromeDriverManager().install()),
+            options=chrome_options
+        )
     elif browser == "firefox":
         driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
     else:

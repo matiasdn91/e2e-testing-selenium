@@ -1,40 +1,44 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support.ui import WebDriverWait, Select
+from selenium.webdriver.support import expected_conditions as EC
+
 
 class ProductsPage:
-    def __init__(self, driver: WebDriver):
+    def __init__(self, driver, timeout=10):
         self.driver = driver
+        self.wait = WebDriverWait(driver, timeout)
 
-    # Localizadores
-    CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
-    PRODUCT_ADD_BUTTON = "//div[text()='{}']/ancestor::div[@class='inventory_item']//button"
-    PRODUCT_REMOVE_BUTTON = "//div[text()='{}']/ancestor::div[@class='inventory_item']//button"
-    FILTER_DROPDOWN = (By.CLASS_NAME, "product_sort_container")
+        self.cart_badge = (By.CSS_SELECTOR, '[data-test="shopping-cart-badge"]')
+        self.filter_dropdown = (By.CSS_SELECTOR, '[data-test="product-sort-container"]')
+        self.cart_icon = (By.CSS_SELECTOR, '[data-test="shopping-cart-link"]')
 
-    # Agrega un producto al carrito por su nombre.
-    def add_product_to_cart(self, product_name: str):
-        button_xpath = self.PRODUCT_ADD_BUTTON.format(product_name)
-        add_button = self.driver.find_element(By.XPATH, button_xpath)
+    def add_product_to_cart(self, product_name):
+        # Agrega un producto al carrito por nombre.
+        product_id = product_name.lower().replace(" ", "-")
+        add_button = self.wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, f'[data-test="add-to-cart-{product_id}"]'))
+        )
         add_button.click()
 
-    # Elimina un producto del carrito por su nombre.
-    def remove_product_from_cart(self, product_name: str):
-        button_xpath = self.PRODUCT_REMOVE_BUTTON.format(product_name)
-        remove_button = self.driver.find_element(By.XPATH, button_xpath)
+    def remove_product_from_cart(self, product_name):
+        # Elimina un producto del carrito por nombre.
+        product_id = product_name.lower().replace(" ", "-")
+        remove_button = self.wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, f'[data-test="remove-{product_id}"]'))
+        )
         remove_button.click()
 
-    # Devuelve la cantidad de productos en el carrito.
-    def get_cart_count(self) -> int:
+    def get_cart_count(self):
+        # Devuelve la cantidad de productos en el carrito.
         try:
-            badge = self.driver.find_element(*self.CART_BADGE)
+            badge = self.wait.until(EC.presence_of_element_located(self.cart_badge))
             return int(badge.text)
         except:
-            return 0  # Si no hay badge, el carrito está vacío
+            return 0  # Si no hay badge, el carrito está vacío.
 
-    # Filtra/ordena productos por criterio
-    def filter_products(self, criteria: str):
-        dropdown = self.driver.find_element(*self.FILTER_DROPDOWN)
+    def filter_products(self, criteria):
+        # Ordena los productos según el criterio especificado.
+        dropdown = self.wait.until(EC.element_to_be_clickable(self.filter_dropdown))
         select = Select(dropdown)
 
         mapping = {
@@ -48,3 +52,8 @@ class ProductsPage:
             select.select_by_value(mapping[criteria])
         else:
             raise ValueError(f"Criterio inválido: {criteria}")
+
+    def go_to_cart(self):
+        # Navega al carrito de compras.
+        self.wait.until(EC.element_to_be_clickable(self.cart_icon)).click()
+
